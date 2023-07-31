@@ -1,0 +1,1 @@
+Nama: Hafizh Athallah Yovanka <br> TTL: Bandung, 22-Oktober-2005 <br> Hobi: Berenang
