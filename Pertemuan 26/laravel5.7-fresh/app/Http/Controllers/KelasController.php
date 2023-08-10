@@ -13,7 +13,7 @@ class KelasController extends Controller
         // ->orderBy('lokasi_ruangan')
         // ->where('nama_wali_kelas', 'like', '%a%')
         // ->where('jurusan', 'like', 'RPL')
-        ->paginate(15);
+        ->get();
         return view('kelas', $data);
     }
     public function createKelas()
@@ -37,6 +37,39 @@ class KelasController extends Controller
             return redirect('/kelas')->with('success', 'Data berhasil ditambahkan');
         } else {
             return redirect('/kelas')->with('error', 'Data gagal ditambahkan');
+        }
+    }
+    public function update(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'nama_kelas' => 'required',
+            'jurusan' => 'required',
+            'lokasi_ruangan' => 'required',
+            'nama_wali_kelas' => 'required'
+        ]);
+
+        $input = $request->all();
+        unset($input['_token']);
+        unset($input['_method']);
+        $status = DB::table('t_kelas')->where('id', $id)->update($input);
+        
+        if ($status) {
+            return redirect('/kelas')->with('success', 'Data berhasil diupdate');
+        } else {
+            return redirect('/kelas')->with('error', 'Data gagal diupdate');
+        }
+    }
+    public function edit(Request $request, $id){
+        $data['kelas'] = DB::table('t_kelas')->find($id);
+        return view('siswa/formKelas', $data);
+    }
+    public function destroy(Request $request, $id){
+        $status = DB::table('t_kelas')->where('id', $id)->delete();
+        
+        if ($status) {
+            return redirect('/kelas')->with('success', 'Data berhasil dihapus');
+        } else {
+            return redirect('/kelas')->with('error', 'Data gagal dihapus');
         }
     }
 }
