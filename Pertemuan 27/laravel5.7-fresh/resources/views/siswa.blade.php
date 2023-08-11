@@ -1,0 +1,56 @@
+@extends('layouts.main')
+@section('isi')
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{ session('success') }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{ session('error') }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+@endif
+
+<h1 class="text-center p-5"><b>Daftar Siswa SMKN 4 Bandung</b></h1>
+<a href="{{ url('siswa/create') }}"><button type="button" class="btn btn-success mb-3"><b>+ </b>Tambah Data</button></a>
+<a href="{{ url('kelas') }}"><button type="button" class="btn btn-primary mb-3">Tabel Kelas</button></a>
+<a href="{{ url('guru') }}"><button type="button" class="btn btn-primary mb-3">Tabel Guru</button></a>
+<div class="container">
+    <div class="row">
+        <table class="table table-striped" border="1">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NIS</th>
+                    <th>Nama Lengkap</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Golongan Darah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($siswa as $s)
+                <tr>
+                    <td>{{ isset($i) ? ++$i : $i = 1 }}</td>
+                    <td>{{ $s -> nis }}</td>
+                    <td>{{ $s -> nama_lengkap }}</td>
+                    <td>{{ $s -> jenkel }}</td>
+                    <td>{{ $s -> goldar }}</td>
+                    <td>
+                        <a class=" btn btn-warning d-inline" href="{{ url('siswa/' . $s->id . 'edit') }}"><i class="bi bi-pencil-square"></i></a>
+                        <form class="d-inline" action="{{ url('siswa', $s->id) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+@endsection
